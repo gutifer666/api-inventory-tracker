@@ -4,6 +4,7 @@ import com.javiergutierrez.inventory_tracker_api.modules.users.application.servi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -36,22 +37,22 @@ public class SecurityConfiguration {
 	}
 
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http
-				.csrf(AbstractHttpConfigurer::disable)
-				.authorizeHttpRequests(request -> request
-						.requestMatchers("/admin").hasAnyRole("ADMIN", "USER")
-						.requestMatchers("/user").hasRole("USER")
-						.requestMatchers("/").permitAll()
-						.requestMatchers("api/products").permitAll()
-						.requestMatchers("api/transactions").permitAll()
-						//.requestMatchers("/login").permitAll()
-						.anyRequest().authenticated())
-				.formLogin(Customizer.withDefaults())
-				.httpBasic(Customizer.withDefaults())
-				.build();
-	}
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    return http
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(request -> request
+                    .requestMatchers("/").permitAll()
+                    .requestMatchers("/api/users").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/products/**").hasAnyRole("ADMIN", "EMPLOYEE", "CUSTOMER")
+                    .requestMatchers("/api/products/**").hasRole("ADMIN")
+                    .requestMatchers("/api/transactions").hasRole("EMPLOYEE")
+                    //.requestMatchers("/login").permitAll()
+                    .anyRequest().authenticated())
+            .formLogin(Customizer.withDefaults())
+            .httpBasic(Customizer.withDefaults())
+            .build();
+}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
