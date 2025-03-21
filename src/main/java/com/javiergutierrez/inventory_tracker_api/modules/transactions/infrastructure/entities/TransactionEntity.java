@@ -26,7 +26,7 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString()
 @EqualsAndHashCode()
-@Table(name = "transaction")
+@Table(name = "transactions")
 @Schema(description = "Representa una transacción en el sistema.")
 @Entity
 public class TransactionEntity {

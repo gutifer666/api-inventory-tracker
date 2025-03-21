@@ -36,23 +36,23 @@ public class SecurityConfiguration {
 		return provider;
 	}
 
-
-@Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    return http
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(request -> request
-                    .requestMatchers("/").permitAll()
-                    .requestMatchers("/api/users").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/api/products/**").hasAnyRole("ADMIN", "EMPLOYEE", "CUSTOMER")
-                    .requestMatchers("/api/products/**").hasRole("ADMIN")
-                    .requestMatchers("/api/transactions").hasRole("EMPLOYEE")
-                    //.requestMatchers("/login").permitAll()
-                    .anyRequest().authenticated())
-            .formLogin(Customizer.withDefaults())
-            .httpBasic(Customizer.withDefaults())
-            .build();
-}
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		return http
+				.csrf(AbstractHttpConfigurer::disable)
+				.authorizeHttpRequests(request -> request
+						.requestMatchers("/v3/api-docs/**", "/swagger-ui*/**", "/swagger-ui.html").permitAll()
+						.requestMatchers("/").permitAll()
+						.requestMatchers("/api/users").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/api/products/**").hasAnyRole("ADMIN", "EMPLOYEE", "CUSTOMER")
+						.requestMatchers("/api/products/**").hasRole("ADMIN")
+						.requestMatchers("/api/transactions").hasRole("EMPLOYEE")
+						//.requestMatchers("/login").permitAll()
+						.anyRequest().authenticated())
+				.formLogin(Customizer.withDefaults())
+				.httpBasic(Customizer.withDefaults())
+				.build();
+	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
