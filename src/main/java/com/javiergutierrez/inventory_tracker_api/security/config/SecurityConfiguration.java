@@ -63,7 +63,7 @@ public class SecurityConfiguration {
 						.requestMatchers("/v3/api-docs/**", "/swagger-ui*/**", "/swagger-ui.html").permitAll()
 						.requestMatchers("/").permitAll()
 						.requestMatchers("/api/auth/**").permitAll() // Permitir acceso a endpoints de autenticación
-						.requestMatchers("/api/users").hasRole("ADMIN")
+						.requestMatchers("/api/users").hasAnyRole("ADMIN", "EMPLOYEE")
 						.requestMatchers(HttpMethod.GET, "/api/products/**").hasAnyRole("ADMIN", "EMPLOYEE", "CUSTOMER")
 						.requestMatchers("/api/products/**").hasRole("ADMIN")
 						.requestMatchers("/api/transactions").hasAnyRole("ADMIN", "EMPLOYEE")
