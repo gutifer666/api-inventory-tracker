@@ -66,7 +66,7 @@ public class SecurityConfiguration {
 						.requestMatchers("/api/users").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/api/products/**").hasAnyRole("ADMIN", "EMPLOYEE", "CUSTOMER")
 						.requestMatchers("/api/products/**").hasRole("ADMIN")
-						.requestMatchers("/api/transactions").hasRole("EMPLOYEE")
+						.requestMatchers("/api/transactions").hasAnyRole("ADMIN", "EMPLOYEE")
 						.anyRequest().authenticated())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider())
