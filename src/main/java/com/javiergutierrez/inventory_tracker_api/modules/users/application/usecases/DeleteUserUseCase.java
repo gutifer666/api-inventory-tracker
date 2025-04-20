@@ -19,11 +19,17 @@ public class DeleteUserUseCase {
 
 	public Optional<User> deleteUser(long usersId) {
 		log.info("Call to deleteUser {}", usersId);
+		Optional<User> userToDelete = userRepositoryAdapter.findUserById(usersId);
+		if (userToDelete.isEmpty()) {
+			throw new IllegalStateException("User not found with ID: " + usersId);
+		}
+		
 		boolean isDeleted = userRepositoryAdapter.deleteUser(usersId);
 		if (!isDeleted) {
 			throw new IllegalStateException("Failed to delete user with ID: " + usersId);
 		}
-		return Optional.empty();
+		
+		return userToDelete;
 	}
 
 }
