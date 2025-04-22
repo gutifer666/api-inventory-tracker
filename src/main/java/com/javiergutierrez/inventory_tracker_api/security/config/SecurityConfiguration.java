@@ -64,6 +64,7 @@ public class SecurityConfiguration {
 						.requestMatchers("/").permitAll()
 						.requestMatchers("/api/auth/**").permitAll() // Permitir acceso a endpoints de autenticación
 						.requestMatchers("/api/users").hasAnyRole("ADMIN", "EMPLOYEE")
+						.requestMatchers("/api/categories").hasAnyRole("ADMIN", "EMPLOYEE")
 						.requestMatchers(HttpMethod.GET, "/api/products/**").hasAnyRole("ADMIN", "EMPLOYEE", "CUSTOMER")
 						.requestMatchers("/api/products/**").hasRole("ADMIN")
 						.requestMatchers("/api/transactions").hasAnyRole("ADMIN", "EMPLOYEE")

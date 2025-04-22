@@ -60,20 +60,18 @@ public class CategoryRepositoryAdapter {
 		return Optional.of(categoryMapper.toModel(updatedCategoryEntity));
 	}
 
-	public Optional<Category> deleteCategory(Long id) {
+	public boolean deleteCategory(Long id) {
 		log.info("Call to deleteCategory with ID: {}.", id);
 
-		Optional<Category> category = iJpaCategoryRepository.findById(id).map(categoryMapper::toModel);
-
-		if (category.isPresent()) {
+		if (iJpaCategoryRepository.existsById(id)) {
 			iJpaCategoryRepository.deleteById(id);
 			log.info("Deleted category with ID: {}.", id);
-			return category;
+			return true;
 		}
-
-		log.error("No category found with ID: {}.", id);
-
-		return category;
+		else {
+			log.error("No category found with ID: {}.", id);
+			return false;
+		}
 
 	}
 }

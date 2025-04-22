@@ -24,7 +24,14 @@ public class DeleteCategoryUseCase {
 		Optional<Category> categoryOptional = categoryRepositoryAdapter.findCategoryById(id);
 
 		if (categoryOptional.isEmpty()) {
-			throw new IllegalStateException("Category with ID: " + id + " does not exist.");
+			log.error("Category not found with ID: {}", id);
+			throw new IllegalStateException("Category not found with ID: " + id);
+		}
+
+		boolean isDeleted = categoryRepositoryAdapter.deleteCategory(id);
+		if (!isDeleted) {
+			log.error("Failed to delete category with ID: {}", id);
+			throw new IllegalStateException("Failed to delete category with ID: " + id);
 		}
 
 		return categoryOptional;
