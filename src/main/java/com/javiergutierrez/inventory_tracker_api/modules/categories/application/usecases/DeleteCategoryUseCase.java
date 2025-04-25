@@ -29,6 +29,7 @@ public class DeleteCategoryUseCase {
 		}
 
 		boolean isDeleted = categoryRepositoryAdapter.deleteCategory(id);
+
 		if (!isDeleted) {
 			log.error("Failed to delete category with ID: {}", id);
 			throw new IllegalStateException("Failed to delete category with ID: " + id);

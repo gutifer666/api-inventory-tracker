@@ -60,20 +60,16 @@ public class SupplierRepositoryAdapter {
 		return Optional.of(supplierMapper.toModel(updatedSupplierEntity));
 	}
 
-	public Optional<Supplier> deleteSupplier(Long id) {
+	public boolean deleteSupplier(Long id) {
 		log.info("Call to deleteSupplier with ID: {}.", id);
 
-		Optional<Supplier> supplier = iJpaSupplierRepository.findById(id).map(supplierMapper::toModel);
-
-		if (supplier.isPresent()) {
+		if (iJpaSupplierRepository.existsById(id)) {
 			iJpaSupplierRepository.deleteById(id);
 			log.info("Deleted supplier with ID: {}.", id);
-			return supplier;
+			return true;
+		} else {
+			log.error("No supplier found with ID: {}.", id);
+			return false;
 		}
-
-		log.error("No supplier found with ID: {}.", id);
-
-		return supplier;
-
 	}
 }

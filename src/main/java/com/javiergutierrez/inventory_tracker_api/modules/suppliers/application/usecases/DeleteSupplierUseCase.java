@@ -24,7 +24,15 @@ public class DeleteSupplierUseCase {
 		Optional<Supplier> supplierOptional = supplierRepositoryAdapter.findSupplierById(id);
 
 		if (supplierOptional.isEmpty()) {
+			log.error("Supplier not found with ID: {}", id);
 			throw new IllegalStateException("Supplier with ID: " + id + " does not exist.");
+		}
+
+		boolean isDeleted = supplierRepositoryAdapter.deleteSupplier(id);
+
+		if (!isDeleted) {
+			log.error("Failed to delete supplier with ID: {}", id);
+			throw new IllegalStateException("Failed to delete supplier with ID: " + id);
 		}
 
 		return supplierOptional;
