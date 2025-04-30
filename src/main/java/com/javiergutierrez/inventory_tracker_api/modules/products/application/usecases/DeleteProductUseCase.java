@@ -43,9 +43,9 @@ public class DeleteProductUseCase {
 
 	private Optional<Product> deleteProductByIdOrElseThrow(long id) throws IllegalStateException {
 		try {
-			productRepositoryAdapter.deleteProduct(id);
+			Optional<Product> product = productRepositoryAdapter.deleteProduct(id);
 			log.info("Product with id {} deleted successfully", id);
-			return Optional.empty();
+			return product; // Return the product from the repository instead of empty
 		} catch (Exception e) {
 			log.error("Failed to delete product with id {}", id, e);
 			throw new IllegalStateException("Failed to delete product: " + id, e);
