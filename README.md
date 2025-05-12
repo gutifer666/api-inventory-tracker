@@ -44,7 +44,9 @@ Esta guía explica paso a paso cómo configurar y ejecutar la aplicación Invent
 
 ## Paso 3: Configurar la aplicación
 
-1. **Revisar la configuración de la base de datos**:
+1. **Configuración de la base de datos**:
+
+   ### Para desarrollo local con MySQL local:
     - Abre el archivo `src/main/resources/application.properties`
     - Verifica que la configuración de la base de datos coincida con tu entorno:
       ```properties
@@ -53,6 +55,20 @@ Esta guía explica paso a paso cómo configurar y ejecutar la aplicación Invent
       spring.datasource.password=C12345678!
       ```
     - Si has modificado algún parámetro durante la creación de la base de datos (nombre de usuario, contraseña, nombre de la base de datos), actualiza este archivo en consecuencia
+
+   ### Para desarrollo con MySQL en Railway (rama railway):
+    - Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
+      ```
+      MYSQL_DATABASE=railway
+      MYSQL_ROOT_PASSWORD=tu_contraseña_de_railway
+      MYSQLDATABASE=${MYSQL_DATABASE}
+      MYSQLHOST=${RAILWAY_PRIVATE_DOMAIN}
+      MYSQLPASSWORD=${MYSQL_ROOT_PASSWORD}
+      MYSQLPORT=3306
+      MYSQLUSER=root
+      ```
+    - Este archivo `.env` no se subirá al repositorio por seguridad (está incluido en `.gitignore`)
+    - En producción, estas variables se configurarán directamente en Railway
 
 ## Paso 4: Ejecutar la aplicación
 
@@ -124,4 +140,13 @@ Esta guía explica paso a paso cómo configurar y ejecutar la aplicación Invent
 - Incluye Spring Security para la autenticación y autorización
 - Utiliza JWT para la gestión de tokens
 - La documentación de la API está disponible a través de Swagger UI
+
+## Despliegue en Railway
+
+### Rama `railway`
+
+- La rama `railway` está configurada para ser desplegada en Railway
+- Esta rama utiliza una base de datos MySQL alojada en Railway
+- Las variables de entorno necesarias para la conexión a la base de datos se configuran directamente en Railway
+- Para desarrollo local usando la base de datos de Railway, se debe crear un archivo `.env` con las credenciales necesarias (ver Paso 3)
 
